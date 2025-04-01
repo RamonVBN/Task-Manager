@@ -101,6 +101,11 @@ export class TasksController {
             throw new AppError('You cannot update other members tasks.')
         }
 
+        if (status === new_status) {
+
+            throw new AppError('You cannot update a task status to the current status')
+        }
+
         await prisma.task.update({data: {status: new_status}, where: {id: task_id}})
 
         await prisma.task_History.create({data: {task_id, changedBy: assigned_to, oldStatus: status, newStatus: new_status}})
